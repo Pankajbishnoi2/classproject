@@ -1,21 +1,22 @@
+// ================= SELECT ELEMENTS =================
 const container = document.getElementById("product-container");
 const searchInput = document.getElementById("searchInput");
 const searchBtn = document.getElementById("searchBtn");
+const historyBtn = document.getElementById("historyBtn");
+const suggestionBox = document.getElementById("suggestions");
 
 let products = [];
 
-/* ================= FETCH PRODUCTS ================= */
+// ================= FETCH PRODUCTS =================
 fetch("https://dummyjson.com/products")
-.then(response => response.json())
-.then(data => {
-    products = data.products;
-    displayProducts(products);
-})
-.catch(error => {
-    console.log("Error:", error);
-});
+    .then(response => response.json())
+    .then(data => {
+        products = data.products;
+        displayProducts(products);
+    })
+    .catch(error => console.log("Error:", error));
 
-/* ================= DISPLAY PRODUCTS ================= */
+// ================= DISPLAY PRODUCTS =================
 function displayProducts(list) {
     container.innerHTML = "";
 
@@ -34,38 +35,73 @@ function displayProducts(list) {
     });
 }
 
-/* ================= SEARCH FUNCTION ================= */
+// ================= FILTER PRODUCTS (NO HISTORY) =================
 function handleSearch() {
     const query = searchInput.value.trim().toLowerCase();
 
-    if (query === "") {
+    if (!query) {
         displayProducts(products);
         return;
     }
 
-    // Filter products
-    const filteredProducts = products.filter(product =>
+    const filtered = products.filter(product =>
         product.title.toLowerCase().includes(query)
     );
 
-    displayProducts(filteredProducts);
+    displayProducts(filtered);
+}
 
-    // Save search history
+// ================= SAVE HISTORY (ONLY STRINGS) =================
+function saveHistory(query) {
     let history = JSON.parse(localStorage.getItem("searchHistory")) || [];
 
-    if (!history.some(item => item.query === query)) {
-        history.push({
-            query: query,
-            time: new Date().toLocaleString()
-        });
+    // avoid duplicates
+    if (!history.includes(query)) {
+        history.unshift(query); // latest search first
         localStorage.setItem("searchHistory", JSON.stringify(history));
     }
 }
 
-/* ================= EVENT LISTENERS ================= */
+// ================= SHOW HISTORY =================
+function showHistory() {
+    suggestionBox.innerHTML = "";
 
-// Search on typing
+    const history = JSON.parse(localStorage.getItem("searchHistory")) || [];
+
+    if (history.length === 0) {
+        suggestionBox.innerHTML = "<p>No history found</p>";
+        return;
+    }
+
+    history.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "suggestion-item";
+        div.innerText = item; // item is STRING
+
+        // Click history → search again
+        div.addEventListener("click", () => {
+            searchInput.value = item;
+            handleSearch();
+            suggestionBox.innerHTML = "";
+        });
+
+        suggestionBox.appendChild(div);
+    });
+}
+
+// ================= EVENT LISTENERS =================
+
+// Typing → only filter products
 searchInput.addEventListener("keyup", handleSearch);
 
-// Search on button click
-searchBtn.addEventListener("click", handleSearch);
+// Search button → filter + save history
+searchBtn.addEventListener("click", () => {
+    const query = searchInput.value.trim().toLowerCase();
+    if (!query) return;
+
+    handleSearch();
+    saveHistory(query);
+});
+
+// Show History button → show saved history
+historyBtn.addEventListener("click", showHistory);
