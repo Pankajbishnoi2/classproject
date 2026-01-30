@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Product Store</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <h1>🛒 Product Store</h1>
-    <input
-        type="text"
-        id="searchInput"
-        placeholder="Search product..."
-        >
-        <button id="searchBtn">🔍</button>
-        <div id="product-container" class="products"></div>
-     <script src="script.js"></script>
-</body>
 
+    <h1>🛒 Product Store</h1>
+
+    <!-- Search Bar -->
+    <input type="text" id="searchInput" placeholder="Search product...">
+    <button id="searchBtn">🔍</button>
+    <button id="historyBtn">📜</button>
+
+    <!-- History / Suggestions -->
+    <div id="suggestions"></div>
+
+    <!-- Products -->
+    <div id="product-container" class="products"></div>
+
+    <script src="script.js"></script>
+</body>
 </html>
