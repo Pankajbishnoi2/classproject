@@ -1,25 +1,37 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Product Store</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FakeStore Products</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">FakeStore</a>
+            <p class="tagline">Discover amazing products</p>
+        </div>
+    </header>
+    <div class="container">
+        <div class="search-box">
+            <input type="search" id="searchInput" placeholder="Search products...">
+            <button id="searchBtn">Search</button>
+            <button id="historyBtn" onclick="window.location.href='history.html'">Search History</button>
+            <button id="historyBtn" onclick="window.location.href='view-history.html'">View History</button>
+            <div id="suggestion"></div>
+        </div>
+        <div id="products" class="products">
+            <p class="loading">Loading products...</p>
+        </div>
+        <div id="pagination" class="pagination"></div>
+    </div>
 
-    <h1>🛒 Product Store</h1>
-
-    <!-- Search Bar -->
-    <input type="text" id="searchInput" placeholder="Search product...">
-    <button id="searchBtn">🔍</button>
-    <button id="historyBtn">📜</button>
-
-    <!-- History / Suggestions -->
-    <div id="suggestions"></div>
-
-    <!-- Products -->
-    <div id="product-container" class="products"></div>
-
-    <script src="script.js"></script>
+    <script src="js/pagination.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
